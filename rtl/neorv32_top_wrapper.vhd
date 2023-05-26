@@ -16,7 +16,9 @@ entity neorv32_top_wrapper is
     -- Global control --
     clk_i       : in  std_ulogic; -- global clock, rising edge
     rstn_i      : in  std_ulogic; -- global reset, low-active, async
-    -- GPIO --
+    -- Interrupts --
+    xirq_i      : in  std_ulogic_vector(7 downto 0);
+    -- Communications --
     gpio_o      : out std_ulogic_vector(7 downto 0); -- parallel output
     pwm_o       : out std_ulogic
   );
@@ -25,6 +27,7 @@ end entity;
 architecture neorv32_top_wrapper_rtl of neorv32_top_wrapper is
 
   signal gpio_o_s : std_ulogic_vector(63 downto 0);
+  signal xirq_i_s : std_ulogic_vector(31 downto 0);
   signal uart0_cpu_tx_s : std_ulogic;
   signal uart0_cpu_rdy_s : std_ulogic;
   signal pwm_o_s : std_ulogic_vector(11 downto 0);
@@ -50,7 +53,7 @@ begin
     -- CPU_EXTENSION_RISCV_E        => false,  -- implement embedded RF extension?
     CPU_EXTENSION_RISCV_M        => true,  -- implement mul/div extension?
     -- CPU_EXTENSION_RISCV_U        => false,  -- implement user mode extension?
-    CPU_EXTENSION_RISCV_Zfinx    => true,  -- implement 32-bit floating-point extension (using INT regs!)
+    -- CPU_EXTENSION_RISCV_Zfinx    => true,  -- implement 32-bit floating-point extension (using INT regs!)
     -- CPU_EXTENSION_RISCV_Zicntr   => true,   -- implement base counters?
     -- CPU_EXTENSION_RISCV_Zicond   => false,  -- implement conditional operations extension?
     -- CPU_EXTENSION_RISCV_Zihpm    => false,  -- implement hardware performance monitors?
@@ -80,13 +83,13 @@ begin
     MEM_INT_DMEM_SIZE            => MEM_INT_DMEM_SIZE, -- size of processor-internal data memory in bytes
 
     -- Internal Instruction Cache (iCACHE) --
-    ICACHE_EN                    => true,  -- implement instruction cache
+    -- ICACHE_EN                    => true,  -- implement instruction cache
     -- ICACHE_NUM_BLOCKS            => 4,      -- i-cache: number of blocks (min 1), has to be a power of 2
     -- ICACHE_BLOCK_SIZE            => 64,     -- i-cache: block size in bytes (min 4), has to be a power of 2
     -- ICACHE_ASSOCIATIVITY         => 1,      -- i-cache: associativity / number of sets (1=direct_mapped), has to be a power of 2
 
     -- Internal Data Cache (dCACHE) --
-    DCACHE_EN                    => true,  -- implement data cache
+    -- DCACHE_EN                    => true,  -- implement data cache
     -- DCACHE_NUM_BLOCKS            => 4,      -- d-cache: number of blocks (min 1), has to be a power of 2
     -- DCACHE_BLOCK_SIZE            => 64,     -- d-cache: block size in bytes (min 4), has to be a power of 2
 
@@ -99,7 +102,7 @@ begin
     -- MEM_EXT_ASYNC_TX             => false,  -- use register buffer for TX data when false
 
     -- External Interrupts Controller (XIRQ) --
-    -- XIRQ_NUM_CH                  => 0,      -- number of external IRQ channels (0..32)
+    XIRQ_NUM_CH                  => 32,      -- number of external IRQ channels (0..32)
     -- XIRQ_TRIGGER_TYPE            => x"ffffffff", -- trigger type: 0=level, 1=edge
     -- XIRQ_TRIGGER_POLARITY        => x"ffffffff", -- trigger polarity: 0=low-level/falling-edge, 1=high-level/rising-edge
 
@@ -147,11 +150,18 @@ begin
     uart0_cts_i    => 'L', -- HW flow control: UART0.TX allowed to transmit, low-active, optional
     
     -- PWM (available if IO_PWM_NUM_CH > 0) --                          
-    pwm_o          => pwm_o_s -- pwm channels
+    pwm_o          => pwm_o_s, -- pwm channels
+    
+    -- External platform interrupts (available if XIRQ_NUM_CH > 0) --
+    xirq_i         => xirq_i_s -- IRQ channels
+
   );
   
-  -- GPIO output --
+  -- Communications
   gpio_o <= gpio_o_s(7 downto 0);
   pwm_o <= pwm_o_s(0);
+  
+  -- Interrupts
+  xirq_i_s(7 downto 0) <= xirq_i;
 
 end architecture;
