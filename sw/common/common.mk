@@ -32,6 +32,8 @@
 # The NEORV32 Processor - https://github.com/stnolting/neorv32              (c) Stephan Nolting #
 #################################################################################################
 
+# Debug includes
+#$(info $$APP_INC is [${APP_INC}])
 
 # -----------------------------------------------------------------------------
 # USER CONFIGURATION
@@ -60,7 +62,6 @@ USER_FLAGS ?=
 # Relative or absolute path to the NEORV32 home folder
 NEORV32_HOME ?= ../../..
 NEORV32_LOCAL_RTL ?= $(NEORV32_HOME)/rtl
-
 
 # -----------------------------------------------------------------------------
 # NEORV32 framework

@@ -26,7 +26,8 @@ USER_FLAGS ?=
 # -----------------------------------------------------------------------------
 ifneq (,$(findstring RUN_FREERTOS_DEMO,$(USER_FLAGS)))
 # FreeRTOS home folder (adapt this!)
-FREERTOS_HOME ?= /mnt/n/Projects/FreeRTOS
+#FREERTOS_HOME ?= /mnt/n/Projects/FreeRTOS
+FREERTOS_HOME ?= ~/arch_shared/FreeRTOS
 
 # FreeRTOS RISC-V specific
 APP_SRC += $(wildcard $(FREERTOS_HOME)/FreeRTOS/Source/portable/GCC/RISC-V/*.c)

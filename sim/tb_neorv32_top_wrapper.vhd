@@ -51,6 +51,6 @@ begin
     pwm_o   => pwm_o_s
   );
 
-  xirq_8bit_s <= gpio_8bit_s;
-
+  --xirq_8bit_s <= gpio_8bit_s;
+  xirq_8bit_s <= (others => 'U');
 end Behavioral;

@@ -83,13 +83,13 @@ begin
     MEM_INT_DMEM_SIZE            => MEM_INT_DMEM_SIZE, -- size of processor-internal data memory in bytes
 
     -- Internal Instruction Cache (iCACHE) --
-    -- ICACHE_EN                    => true,  -- implement instruction cache
+    ICACHE_EN                    => true,  -- implement instruction cache
     -- ICACHE_NUM_BLOCKS            => 4,      -- i-cache: number of blocks (min 1), has to be a power of 2
     -- ICACHE_BLOCK_SIZE            => 64,     -- i-cache: block size in bytes (min 4), has to be a power of 2
     -- ICACHE_ASSOCIATIVITY         => 1,      -- i-cache: associativity / number of sets (1=direct_mapped), has to be a power of 2
 
     -- Internal Data Cache (dCACHE) --
-    -- DCACHE_EN                    => true,  -- implement data cache
+    DCACHE_EN                    => true,  -- implement data cache
     -- DCACHE_NUM_BLOCKS            => 4,      -- d-cache: number of blocks (min 1), has to be a power of 2
     -- DCACHE_BLOCK_SIZE            => 64,     -- d-cache: block size in bytes (min 4), has to be a power of 2
 
@@ -120,7 +120,7 @@ begin
     -- IO_SDI_EN                    => false,  -- implement serial data interface (SDI)?
     -- IO_SDI_FIFO                  => 0,      -- SDI RTX fifo depth, has to be zero or a power of two
     -- IO_TWI_EN                    => false,  -- implement two-wire interface (TWI)?
-    IO_PWM_NUM_CH                => 1      -- number of PWM channels to implement (0..12); 0 = disabled
+    IO_PWM_NUM_CH                => 1,      -- number of PWM channels to implement (0..12); 0 = disabled
     -- IO_WDT_EN                    => false,  -- implement watch dog timer (WDT)?
     -- IO_TRNG_EN                   => false,  -- implement true random number generator (TRNG)?
     -- IO_TRNG_FIFO                 => 1,      -- TRNG fifo depth, has to be a power of two, min 1
@@ -130,7 +130,7 @@ begin
     -- IO_CFS_OUT_SIZE              => 32,     -- size of CFS output conduit in bits
     -- IO_NEOLED_EN                 => false,  -- implement NeoPixel-compatible smart LED interface (NEOLED)?
     -- IO_NEOLED_TX_FIFO            => 1,      -- NEOLED FIFO depth, has to be a power of two, min 1
-    -- IO_GPTMR_EN                  => false,  -- implement general purpose timer (GPTMR)?
+    IO_GPTMR_EN                  => true  -- implement general purpose timer (GPTMR)?
     -- IO_XIP_EN                    => false,  -- implement execute in place module (XIP)?
     -- IO_ONEWIRE_EN                => false   -- implement 1-wire interface (ONEWIRE)?
   )
